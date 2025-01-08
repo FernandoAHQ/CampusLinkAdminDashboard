@@ -15,6 +15,7 @@ function LoginPage() {
       return alert(data.message);
 
     localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("accessToken", data.accessToken);
     navigate("/");
   };
 

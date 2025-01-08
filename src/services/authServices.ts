@@ -1,16 +1,26 @@
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
-const API_URL = "http://localhost:3000"; // Replace with your API URL
 
 export const login = async (username: string, password: string) => {
   try {
-    const response = await axios.post(`${API_URL}/authentication/login/admin`, {
+    const response = await axiosInstance.post('/authentication/login/admin', {
       username,
       password,
     });
 
     return response.data;
   } catch (error) {
+    return error;
+  }
+};
+
+export const renewToken = async () => {
+  try {
+    const response = await axiosInstance.get('/authentication/renew/admin');
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
     return error;
   }
 };
