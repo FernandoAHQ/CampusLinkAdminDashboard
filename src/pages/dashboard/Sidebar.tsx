@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaHome } from 'react-icons/fa';
-import { HiAcademicCap, HiDocumentReport, HiHome } from 'react-icons/hi';
+import { HiAcademicCap, HiDocumentReport, HiHome, HiLogout } from 'react-icons/hi';
 
 function Sidebar() {
   return (
@@ -13,15 +13,17 @@ function Sidebar() {
 </button>
 
 <aside id="default-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-   <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+   <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 flex flex-col justify-between">
       <ul className="space-y-2 font-medium">
-        <Item title={'CampusLink'}></Item>
+        <HeaderItem title={'CampusLink'}></HeaderItem>
         <Item title='Home' icon='Home'></Item>
         <Item title='Students' icon='Students'></Item>
         <Item title='Reports' icon='Reports' trail='1' highlight></Item>
-         
-         
       </ul>
+      <div>
+      <Logout></Logout>
+
+      </div>
    </div>
 </aside>
 
@@ -41,24 +43,61 @@ type ItemProps = {
 
 function Item({title, trail, icon, highlight = false}: ItemProps) {
 
-    let iconElement = 
-    icon == 'Home' ? <HiHome size={28} className='text-gray-500 group-hover:text-gray-800' />
-    : icon == 'Students' ? <HiAcademicCap size={28} className='text-gray-500 group-hover:text-gray-800' /> 
-    : icon == 'Reports' ? <HiDocumentReport size={28} className='text-gray-500 group-hover:text-gray-800' /> : null;
+  let iconElement = 
+  icon == 'Home' ? <HiHome size={28} className='text-gray-500 group-hover:text-gray-800' />
+  : icon == 'Students' ? <HiAcademicCap size={28} className='text-gray-500 group-hover:text-gray-800' /> 
+  : icon == 'Reports' ? <HiDocumentReport size={28} className='text-gray-500 group-hover:text-gray-800' /> : null;
 
-    const trailingElements = highlight ? <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{trail}</span>
-    : <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">{trail}</span> ;
+  const trailingElements = highlight ? <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{trail}</span>
+  : <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">{trail}</span> ;
 
-  return (
-    <li>
-            <a href="#" className="group flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            {iconElement}
+return (
+  <li>
+          <a href="#" className="group flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          {iconElement}
 
-               <span className="flex-1 ms-3 whitespace-nowrap">{title}</span>
-               {trail && trailingElements}
-            </a>
-         </li>
-  )
+             <span className="flex-1 ms-3 whitespace-nowrap">{title}</span>
+             {trail && trailingElements}
+          </a>
+       </li>
+)
+}
+
+
+function HeaderItem({title, trail, icon, highlight = false}: ItemProps) {
+
+  let iconElement = 
+  icon == 'Home' ? <HiHome size={28} className='text-gray-500 group-hover:text-gray-800' />
+  : icon == 'Students' ? <HiAcademicCap size={28} className='text-gray-500 group-hover:text-gray-800' /> 
+  : icon == 'Reports' ? <HiDocumentReport size={28} className='text-gray-500 group-hover:text-gray-800' /> : null;
+
+  const trailingElements = highlight ? <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{trail}</span>
+  : <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">{trail}</span> ;
+
+return (
+  <li>
+          <a href="#" className="group flex items-center p-2 text-blue-800  font-bold rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          {iconElement}
+
+             <span className="flex-1 ms-3 whitespace-nowrap text-lg">{title}</span>
+             {trail && trailingElements}
+          </a>
+       </li>
+)
+}
+
+function Logout() {
+
+
+return (
+  <>
+      <a href="#" className="border-t-2 group flex items-center p-2 text-gray-600  font-medium  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+        <HiLogout></HiLogout>
+        <span className="flex-1 ms-3 whitespace-nowrap">Logout</span>
+      </a>
+  </>
+       
+)
 }
 
 
