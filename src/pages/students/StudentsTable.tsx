@@ -6,7 +6,6 @@ export function StudentsTable({ students }: { students: Student[] }) {
     <div className="overflow-x-auto">
       <Table hoverable>
         <Table.Head>
-          <Table.HeadCell></Table.HeadCell>
           <Table.HeadCell>Name</Table.HeadCell>
           <Table.HeadCell>Major</Table.HeadCell>
           <Table.HeadCell>Email</Table.HeadCell>
@@ -17,22 +16,26 @@ export function StudentsTable({ students }: { students: Student[] }) {
         </Table.Head>
         <Table.Body className="divide-y">
           {students.map((student) => (
-            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell>
-                <Avatar
-                  img={student.student_profile_picture}
-                  alt={student.student_name}
-                  rounded
-                />
-              </Table.Cell>
+            <Table.Row
+              className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              key={student.student_id}
+            >
               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {student.student_name}
+                <div className="flex items-center space-x-3">
+                  <Avatar
+                    className="mr-2"
+                    img={student.student_profile_picture}
+                    alt={student.student_name}
+                    rounded
+                  />
+                  {student.student_name}
+                </div>
               </Table.Cell>
               <Table.Cell>{student.major}</Table.Cell>
               <Table.Cell>{student.student_email}</Table.Cell>
               <Table.Cell>
                 <ToggleSwitch
-                  checked={student.active}
+                  checked={student.student_active}
                   onChange={() => console.log("toggled")}
                 />
               </Table.Cell>
