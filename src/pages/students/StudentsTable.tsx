@@ -1,7 +1,7 @@
 import { Avatar, Table, ToggleSwitch } from "flowbite-react";
 import { Student } from "../../models/students";
 
-export function StudentsTable({ students }: { students: Student[] }) {
+export function StudentsTable({ students, setStudentData, setOpenEditModal }: { students: Student[], setStudentData:Function, setOpenEditModal:Function }) {
   return (
     <div className="overflow-x-auto">
       <Table hoverable>
@@ -40,7 +40,18 @@ export function StudentsTable({ students }: { students: Student[] }) {
                 />
               </Table.Cell>
               <Table.Cell>
-                <a
+                <a onClick={() => {
+                  console.log({name: student.student_name})
+                  const studentData = {
+                    name: student.student_name,
+                    major: student.major.toString(),
+                    email: student.student_email,
+
+                  }
+
+                  setStudentData(studentData);
+                  setOpenEditModal(true);
+                }}
                   href="#"
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                 >
