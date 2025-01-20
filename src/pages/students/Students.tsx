@@ -4,24 +4,16 @@ import { Paginator } from "../../components/Pagination";
 import {
   getAllStudents,
   postNewStudent,
+  postUpdateStudent,
 } from "../../services/studentsServices";
-import {
-  Avatar,
-  Button,
-  Label,
-  Modal,
-  Select,
-  TextInput,
-} from "flowbite-react";
+import { Button } from "flowbite-react";
 import { HiPlus } from "react-icons/hi";
 import CreateStudentModal from "./CreateStudentModal";
 import EditStudentModal from "./EditStudentModal";
 
 function Students() {
-
-
-
   const initialStudentData = {
+    id: -1,
     name: "",
     email: "",
     password: "",
@@ -37,7 +29,8 @@ function Students() {
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [studentData, setStudentData] = useState(initialStudentData);
+  const [studentData, setStudentData] =
+    useState<StudentData>(initialStudentData);
 
   const fetchData = async () => {
     const res = await getAllStudents();
@@ -52,6 +45,10 @@ function Students() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!openEditModal) setStudentData(initialStudentData);
+  }, [openCreateModal, openEditModal]);
+
   const addStudent = async () => {
     const [isValid, message] = validateForm(studentData);
     if (!isValid) {
@@ -64,17 +61,26 @@ function Students() {
     setStudentData(initialStudentData);
   };
 
-
-  const updateStudent = async () => {
-    const [isValid, message] = validateForm(studentData);
+  const updateStudent = async (optionals: {
+    passwordChange: boolean;
+    pictureChange: boolean;
+  }) => {
+    const [isValid, message] = validateEditForm(studentData, optionals);
     if (!isValid) {
       return alert(message);
     }
-    // const response = await postNewStudent(studentData);
-    // fetchData();
-    // setOpenCreateModal(false);
-    // alert(response.message);
-    // setStudentData(initialStudentData);
+    //NEED TO ADD STUDENT ID
+    const response = await postUpdateStudent(
+      studentData.id,
+      studentData,
+      optionals
+    );
+    console.log(response);
+
+    fetchData();
+    setOpenEditModal(false);
+    alert(response.message);
+    setStudentData(initialStudentData);
   };
 
   return (
@@ -84,24 +90,46 @@ function Students() {
         All Students: <span className="font-bold">{students.length}</span>
       </div>
       <hr className="h-0.5 my-4 bg-gray-200 border-0 rounded dark:bg-gray-700" />
-      <Button size="xs" className="mb-3" color="blue" onClick={() => setOpenCreateModal(true)}>
+      <Button
+        size="xs"
+        className="mb-3"
+        color="blue"
+        onClick={() => setOpenCreateModal(true)}
+      >
         <HiPlus size={16} className="text-white" /> Add Student
       </Button>
 
-      <StudentsTable students={students} setStudentData={setStudentData} setOpenEditModal={setOpenEditModal} ></StudentsTable>
+      <StudentsTable
+        students={students}
+        setStudentData={setStudentData}
+        setOpenEditModal={setOpenEditModal}
+      ></StudentsTable>
       <Paginator
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
       ></Paginator>
 
-<CreateStudentModal openCreateModal={openCreateModal} setOpenCreateModal={setOpenCreateModal} studentData={studentData} setStudentData={setStudentData} addStudent={addStudent}/>
-<EditStudentModal openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} studentData={studentData} setStudentData={setStudentData} updateStudent={updateStudent}/>
-</div>
+      <CreateStudentModal
+        openCreateModal={openCreateModal}
+        setOpenCreateModal={setOpenCreateModal}
+        studentData={studentData}
+        setStudentData={setStudentData}
+        addStudent={addStudent}
+      />
+      <EditStudentModal
+        openEditModal={openEditModal}
+        setOpenEditModal={setOpenEditModal}
+        studentData={studentData}
+        setStudentData={setStudentData}
+        updateStudent={updateStudent}
+      />
+    </div>
   );
 }
 
-interface StudentData {
+export interface StudentData {
+  id: number;
   name: string;
   email: string;
   password: string;
@@ -124,6 +152,41 @@ const validateForm = (formData: StudentData) => {
       }
     }
   }
+  return [true, ""];
+};
+
+const validateEditForm = (
+  formData: StudentData,
+  {
+    passwordChange,
+    pictureChange,
+  }: {
+    passwordChange: boolean;
+    pictureChange: boolean;
+  }
+) => {
+  if (formData.id < 1) {
+    return [false, "No student selected."];
+  }
+
+  if (passwordChange) {
+    if (formData.password == "") {
+      return [false, "Password field required."];
+    }
+  }
+
+  if (pictureChange) {
+    if (formData.profile_picture == "") {
+      return [false, "Please select a profile picture."];
+    }
+  }
+
+  const { name, major, email } = formData;
+
+  if (name == "" || major == "" || email == "") {
+    return [false, "Please fill out all fields."];
+  }
+
   return [true, ""];
 };
 

@@ -1,7 +1,16 @@
 import { Avatar, Table, ToggleSwitch } from "flowbite-react";
 import { Student } from "../../models/students";
+import { StudentData } from "./Students";
 
-export function StudentsTable({ students, setStudentData, setOpenEditModal }: { students: Student[], setStudentData:Function, setOpenEditModal:Function }) {
+export function StudentsTable({
+  students,
+  setStudentData,
+  setOpenEditModal,
+}: {
+  students: Student[];
+  setStudentData: (studentData: StudentData) => void;
+  setOpenEditModal: (isOpen: boolean) => void;
+}) {
   return (
     <div className="overflow-x-auto">
       <Table hoverable>
@@ -40,18 +49,23 @@ export function StudentsTable({ students, setStudentData, setOpenEditModal }: { 
                 />
               </Table.Cell>
               <Table.Cell>
-                <a onClick={() => {
-                  console.log({name: student.student_name})
-                  const studentData = {
-                    name: student.student_name,
-                    major: student.major.toString(),
-                    email: student.student_email,
+                <a
+                  onClick={() => {
+                    console.log({ name: student.student_name });
+                    const studentData = {
+                      id: student.student_id,
+                      name: student.student_name,
+                      major: student.major,
+                      email: student.student_email,
+                      active: student.student_active,
+                      profile_picture: student.student_profile_picture,
+                      password: "", // Add appropriate value or fetch from student object
+                      password2: "", // Add appropriate value or fetch from student object
+                    };
 
-                  }
-
-                  setStudentData(studentData);
-                  setOpenEditModal(true);
-                }}
+                    setStudentData(studentData);
+                    setOpenEditModal(true);
+                  }}
                   href="#"
                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
                 >
