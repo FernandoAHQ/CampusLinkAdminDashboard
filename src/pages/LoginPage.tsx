@@ -1,23 +1,26 @@
 import React from "react";
 import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
-import { login } from "../services/authServices";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/authentication";
 
 function LoginPage() {
   const navigate = useNavigate();
 
-  const loginCall = async (username: string, password: string) => {
-    const data = await login(username, password);
-    console.log(data);
+  const { login } = useAuth();
 
-    if (data.status !== "successful" || !data.accessToken)
-      return alert(data.message);
 
-    localStorage.setItem("user", JSON.stringify(data));
-    localStorage.setItem("accessToken", data.accessToken);
-    navigate("/");
-  };
+  // const loginCall = async (username: string, password: string) => {
+  //   const data = await login(username, password);
+  //   console.log(data);
+
+  //   if (data.status !== "successful" || !data.accessToken)
+  //     return alert(data.message);
+
+  //   // localStorage.setItem("user", JSON.stringify(data));
+  //   // localStorage.setItem("accessToken", data.accessToken);
+  //   navigate("/");
+  // };
 
   const loginForm = () => {
     const schema = Yup.object().shape({
@@ -32,7 +35,7 @@ function LoginPage() {
         initialValues={{ username: "", password: "" }}
         validationSchema={schema}
         onSubmit={(values: FormikValues) => {
-          loginCall(values.username, values.password);
+          login(values.username, values.password);
         }}
       >
         {({

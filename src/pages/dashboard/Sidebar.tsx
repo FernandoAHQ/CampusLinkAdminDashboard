@@ -6,8 +6,12 @@ import {
   HiLogout,
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/authentication";
 
 function Sidebar() {
+
+    const { logout } = useAuth();
+  
   return (
     <div>
       <button
@@ -46,7 +50,7 @@ function Sidebar() {
             <Item title="Reports" icon="Reports" trail="1" highlight></Item>
           </ul>
           <div>
-            <Logout></Logout>
+            <Logout onClick={logout}></Logout>
           </div>
         </div>
       </aside>
@@ -127,11 +131,11 @@ function HeaderItem({ title, trail, highlight = false }: ItemProps) {
   );
 }
 
-function Logout() {
+function Logout({ onClick }: { onClick: () => void }) {
   return (
     <>
       <a
-        href="#"
+        onClick={onClick}
         className="border-t-2 group flex items-center p-2 text-gray-600  font-medium  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
       >
         <HiLogout></HiLogout>
@@ -140,5 +144,6 @@ function Logout() {
     </>
   );
 }
+
 
 export default Sidebar;

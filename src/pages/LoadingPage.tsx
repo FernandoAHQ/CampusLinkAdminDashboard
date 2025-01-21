@@ -8,6 +8,8 @@ function LoadingPage() {
   useEffect(() => {
     const init = async () => {
       const data = await renewToken();
+      console.log(data);
+      
 
       switch (data.status) {
         case "successful":
