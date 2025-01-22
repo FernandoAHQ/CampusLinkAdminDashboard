@@ -101,7 +101,7 @@ function Students() {
     }
     fetchData();
     setOpenEditModal(false);
-    alert(result.message);
+    //alert(result.message);
     setStudentData(initialStudentData);
   };
 
