@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/authentication";
+import { useAuth } from "../hooks/useAuth";
 
 function LoginPage() {
   const navigate = useNavigate();

@@ -1,5 +1,6 @@
 // axiosInstance.js
 import axios from 'axios';
+import { useAuth } from '../hooks/useAuth';
 
 // Create an Axios instance
 const axiosInstance = axios.create({
@@ -11,6 +12,8 @@ const axiosInstance = axios.create({
 
 // Interceptor to attach token
 axiosInstance.interceptors.request.use(
+
+    
     (config) => {
         const token = localStorage.getItem('accessToken'); // Adjust if using a different storage method
         if (token) {

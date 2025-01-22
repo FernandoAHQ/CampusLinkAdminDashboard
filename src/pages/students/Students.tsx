@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { StudentsTable } from "./StudentsTable";
 import { Paginator } from "../../components/Pagination";
-import {
-  getAllStudents,
-  postNewStudent,
-  postUpdateStudent,
-} from "../../services/studentsServices";
 import { Button } from "flowbite-react";
 import { HiPlus } from "react-icons/hi";
 import CreateStudentModal from "./CreateStudentModal";
 import EditStudentModal from "./EditStudentModal";
+import { useApi } from "../../hooks/useApi";
+import { Student } from "../../models/students";
 
 function Students() {
   const initialStudentData = {
@@ -25,20 +22,27 @@ function Students() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState<Student[]>([]);
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [studentData, setStudentData] =
     useState<StudentData>(initialStudentData);
 
+  const {fetchStudents, postNewStudent, postUpdateStudent} = useApi();
+
   const fetchData = async () => {
-    const res = await getAllStudents();
-    if (res.status == "success") {
-      setStudents(res.data);
-      setTotalPages(1);
+    const result = await fetchStudents();
+    console.log(result);
+    
+    if (Array.isArray(result)) {
+      const [status, studentsFetched] = result;
+      if (status === "success") {
+        setStudents(studentsFetched);
+      }
+    } else {
+      console.error("Failed to fetch students:", result);
     }
-    console.log(res);
   };
 
   useEffect(() => {
@@ -54,10 +58,19 @@ function Students() {
     if (!isValid) {
       return alert(message);
     }
-    const response = await postNewStudent(studentData);
+    const result = await postNewStudent(studentData);
+
+        if (Array.isArray(result)) {
+      const [status, message] = result;
+      
+      if (status === "success") {
+        alert(message);
+      }
+    } else {
+      alert("Error: " + message);
+    }
     fetchData();
     setOpenCreateModal(false);
-    alert(response.message);
     setStudentData(initialStudentData);
   };
 
@@ -70,16 +83,25 @@ function Students() {
       return alert(message);
     }
     //NEED TO ADD STUDENT ID
-    const response = await postUpdateStudent(
-      studentData.id,
-      studentData,
+    const result = await postUpdateStudent({
+      id: studentData.id, 
+      newStudentData: studentData, 
       optionals
+    }
     );
-    console.log(response);
 
+   if (Array.isArray(result)) {
+      const [status, message] = result;
+      
+      if (status === "success") {
+        alert(message);
+      }
+    } else {
+      alert("Error: " + message);
+    }
     fetchData();
     setOpenEditModal(false);
-    alert(response.message);
+    alert(result.message);
     setStudentData(initialStudentData);
   };
 

@@ -17,3 +17,14 @@ interface Admin {
     }
   }
   
+  
+  export interface AuthTokenResponseDTO {
+    status: number;
+    data: {
+      status: string;
+      accessToken?: string; // Optional
+      user?: Admin;
+    }
+  }
+  
+  

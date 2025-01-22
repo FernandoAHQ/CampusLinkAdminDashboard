@@ -1,14 +1,16 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../utils/axiosInstance';
-import { AuthResponseDTO } from '../models/dtos/loginResponse.dto';
+import axios from 'axios';
+import { AuthResponseDTO, AuthTokenResponseDTO } from '../models/dtos/loginResponse.dto';
 
 // Define the shape of the UserContext
 interface UserContextType {
   cookies: Record<string, string>; // For cookie key-value pairs
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  renewToken: () => Promise<boolean>;
+  authenticationStatus: 'checking' | 'authenticated' | 'failed';
 }
 
 // Create the UserContext with the appropriate type or undefined initially
@@ -17,6 +19,27 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
   const [cookies, setCookies, removeCookie] = useCookies();
+  
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:3000',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+// Interceptor to attach token
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = cookies['token']; // Adjust if using a different storage method
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
   // Login function
   const login = async (username: string, password: string) => {
@@ -45,6 +68,25 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const renewToken = async () => {
+    try {
+      const {data}: AuthTokenResponseDTO = await axiosInstance.get('/authentication/renew/admin');
+
+      if(data.status == 'successful') {
+        const {user, accessToken} = data;
+        setCookies('token', accessToken); 
+        setCookies('user', user?.username); 
+        authenticationStatus = 'authenticated';
+      }
+        
+      return true;
+      
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
   // Logout function
   const logout = () => {
     ['token', 'name'].forEach((key) => removeCookie(key)); // Remove saved cookies
@@ -57,6 +99,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       cookies,
       login,
       logout,
+      renewToken,
+      
     }),
     [cookies]
   );

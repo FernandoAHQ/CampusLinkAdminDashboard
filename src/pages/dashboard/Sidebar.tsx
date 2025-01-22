@@ -6,7 +6,7 @@ import {
   HiLogout,
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../hooks/authentication";
+import { useAuth } from "../../hooks/useAuth";
 
 function Sidebar() {
 
