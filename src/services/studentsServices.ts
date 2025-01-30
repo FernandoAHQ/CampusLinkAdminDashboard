@@ -1,5 +1,5 @@
 import axiosInstance from "../utils/axiosInstance";
-import { createStudentType } from "../utils/types";
+import { CreateStudentType } from "../utils/types";
 
 export const getAllStudents = async () => {
   try {
@@ -10,7 +10,7 @@ export const getAllStudents = async () => {
   }
 };
 
-export const postNewStudent = async (newStudentData: createStudentType) => {
+export const postNewStudent = async (newStudentData: CreateStudentType) => {
   const postData = {
     name: newStudentData.name,
     password: newStudentData.password,
@@ -34,7 +34,7 @@ export const postNewStudent = async (newStudentData: createStudentType) => {
 
 export const postUpdateStudent = async (
   id: number,
-  newStudentData: createStudentType,
+  newStudentData: CreateStudentType,
   optionals: { passwordChange: boolean; pictureChange: boolean }
 ) => {
   let postData: {

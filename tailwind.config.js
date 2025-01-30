@@ -26,8 +26,10 @@ export default {
       Nexa: ["Nexa", "sans-serif"],
       NexaThin: ["Nexa-Thin", "sans-serif"],
       NexaHeavy: ["Nexa-Heavy", "sans-serif"],
+      Montserrat: ["Montserrat", "sans-serif"],
 
       body: [
+        "Montserrat",
         "Inter",
         "ui-sans-serif",
         "system-ui",
@@ -45,6 +47,7 @@ export default {
         "Noto Color Emoji",
       ],
       sans: [
+        "Montserrat",
         "Inter",
         "ui-sans-serif",
         "system-ui",

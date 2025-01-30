@@ -12,3 +12,17 @@ export type UpdateStudentType = {
   newStudentData: CreateStudentType,
   optionals: { passwordChange: boolean; pictureChange: boolean }
 };
+
+export type CreateArticleType = {
+  title: string;
+  content: string;
+  tags?: string[];
+  image_url: string;
+};
+
+export type UpdateArticleType = {
+  title: string;
+  content: string;
+  tags?: string[];
+  image_url: string;
+};

@@ -2,6 +2,15 @@ import { Student } from "../models/students";
 import axios from 'axios';
 import { useAuth } from "./useAuth";
 import { CreateStudentType, UpdateStudentType } from "../utils/types";
+import { Article } from "../models/articles";
+
+
+
+interface FetchArticlesResponse {
+  status: string;
+  data: Article[];
+}
+
 
 interface FetchStudentsResponse {
   status: string;
@@ -156,13 +165,33 @@ const postUpdateStudent = async (
     }
   }
 
+
+
+};
+
+const fetchArticles = async (): Promise<[string, Article[]] | Error> => {
+  try {
+    const response = await axiosInstance.get<FetchArticlesResponse>("/articles/all/admin");
+    console.log(response.data);
+    
+  return [response.data.status, response.data.data];
+} catch (error) {
+  if (error instanceof Error) {
+    // If `error` is an instance of `Error`, return it as is
+    return error;
+  } else {
+    // If `error` is not an `Error`, wrap it into an `Error`
+    return new Error("An unknown error occurred");
+  }
+}
 };
 
 
 return {
   fetchStudents,
   postNewStudent,
-  postUpdateStudent
+  postUpdateStudent,
+  fetchArticles
 }
 
 };

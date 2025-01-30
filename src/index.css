@@ -16,3 +16,10 @@
   font-family: 'Nexa-Heavy';
   src: url('../static/fonts/Nexa-Heavy.ttf') format('truetype');
 }
+
+
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../static/fonts/Montserrat.ttf') format('truetype');
+}

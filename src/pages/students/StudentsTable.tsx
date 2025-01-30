@@ -29,7 +29,7 @@ export function StudentsTable({
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
               key={student.student_id}
             >
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              <Table.Cell className="font-medium text-gray-900 dark:text-white">
                 <div className="flex items-center space-x-3">
                   <Avatar
                     className="mr-2"

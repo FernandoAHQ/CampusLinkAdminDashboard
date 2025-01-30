@@ -1,13 +1,18 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   HiAcademicCap,
+  HiAnnotation,
+  HiArchive,
   HiDocumentReport,
   HiHome,
   HiLogout,
+  HiNewspaper,
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import logo from '../../assets/logo.svg'
+import { IconType } from "react-icons";
+import { HiMiniNewspaper } from "react-icons/hi2";
 
 function Sidebar() {
 
@@ -46,9 +51,10 @@ function Sidebar() {
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 flex flex-col justify-between">
           <ul className="space-y-2 font-medium">
             <HeaderItem title={"CampusLink"}></HeaderItem>
-            <Item title="Home" icon="Home"></Item>
-            <Item title="Students" icon="Students"></Item>
-            <Item title="Reports" icon="Reports" trail="1" highlight></Item>
+            <Item title="home" icon={<HiHome size={28} className="text-gray-500 group-hover:text-gray-800" />}></Item>
+            <Item title="students" icon={ <HiAcademicCap size={28} className="text-gray-500 group-hover:text-gray-800"/>}></Item>
+            <Item title="articles" icon={<HiAnnotation size={28} className="text-gray-500 group-hover:text-gray-800"/>}></Item>
+            {/* <Item title="reports" icon="Reports" trail="1" highlight></Item> */}
           </ul>
           <div>
             <Logout onClick={logout}></Logout>
@@ -63,25 +69,25 @@ type ItemProps = {
   title: string;
   trail?: string;
   color?: string | "black";
-  icon?: "Home" | "Students" | "Reports";
+  icon?: ReactNode;
   highlight?: boolean;
 };
 
 function Item({ title, trail, icon, highlight = false }: ItemProps) {
-  const iconElement =
-    icon == "Home" ? (
-      <HiHome size={28} className="text-gray-500 group-hover:text-gray-800" />
-    ) : icon == "Students" ? (
-      <HiAcademicCap
-        size={28}
-        className="text-gray-500 group-hover:text-gray-800"
-      />
-    ) : icon == "Reports" ? (
-      <HiDocumentReport
-        size={28}
-        className="text-gray-500 group-hover:text-gray-800"
-      />
-    ) : null;
+  // const iconElement = 
+  //   icon == "Home" ? (
+  //     <HiHome size={28} className="text-gray-500 group-hover:text-gray-800" />
+  //   ) : icon == "Students" ? (
+      // <HiAcademicCap
+      //   size={28}
+      //   className="text-gray-500 group-hover:text-gray-800"
+      // />
+  //   ) : icon == "Reports" ? (
+  //     <HiDocumentReport
+  //       size={28}
+  //       className="text-gray-500 group-hover:text-gray-800"
+  //     />
+  //   ) : null;
 
   const trailingElements = highlight ? (
     <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
@@ -99,9 +105,9 @@ function Item({ title, trail, icon, highlight = false }: ItemProps) {
         to={title}
         className="group flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
       >
-        {iconElement}
+        {icon}
 
-        <span className="flex-1 ms-3 font-Nexa whitespace-nowrap">{title}</span>
+        <span className="capitalize flex-1 ms-3 font-Nexa whitespace-nowrap">{title}</span>
         {trail && trailingElements}
       </Link>
     </li>
