@@ -8,21 +8,25 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: "#eff6ff",
+          50: "#a1c6fa",
           100: "#dbeafe",
           200: "#bfdbfe",
           300: "#93c5fd",
           400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e40af",
-          900: "#1e3a8a",
-          950: "#172554",
+          500: "#588cf4",
+          600: "#2d7dee",
+          700: "#0f52d7",
+          800: "#0b40a7",
+          900: "#082d77",
+          950: "#051b48",
         },
       },
     },
     fontFamily: {
+      Nexa: ["Nexa", "sans-serif"],
+      NexaThin: ["Nexa-Thin", "sans-serif"],
+      NexaHeavy: ["Nexa-Heavy", "sans-serif"],
+
       body: [
         "Inter",
         "ui-sans-serif",

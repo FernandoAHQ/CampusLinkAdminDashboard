@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Nexa-Thin';
+  src: url('../static/fonts/Nexa-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nexa';
+  src: url('../static/fonts/Nexa.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nexa-Heavy';
+  src: url('../static/fonts/Nexa-Heavy.ttf') format('truetype');
+}

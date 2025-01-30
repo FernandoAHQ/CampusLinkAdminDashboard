@@ -7,6 +7,7 @@ import {
 } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import logo from '../../assets/logo.svg'
 
 function Sidebar() {
 
@@ -100,34 +101,22 @@ function Item({ title, trail, icon, highlight = false }: ItemProps) {
       >
         {iconElement}
 
-        <span className="flex-1 ms-3 whitespace-nowrap">{title}</span>
+        <span className="flex-1 ms-3 font-Nexa whitespace-nowrap">{title}</span>
         {trail && trailingElements}
       </Link>
     </li>
   );
 }
 
-function HeaderItem({ title, trail, highlight = false }: ItemProps) {
-  const trailingElements = highlight ? (
-    <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
-      {trail}
-    </span>
-  ) : (
-    <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
-      {trail}
-    </span>
-  );
+function HeaderItem({ title }: ItemProps) {
 
   return (
-    <li>
-      <a
-        href="#"
-        className="group flex items-center p-2 text-blue-800  font-bold rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-      >
-        <span className="flex-1 ms-3 whitespace-nowrap text-lg">{title}</span>
-        {trail && trailingElements}
-      </a>
-    </li>
+<div className="flex items-center justify-center p-2">
+  <img src={logo} className="w-1/5" alt="" />
+  <span className="flex items-center text-2xl font-NexaHeavy font-semibold text-primary-700 px-2 h-full">
+    {title}
+  </span>
+</div>
   );
 }
 
@@ -139,7 +128,7 @@ function Logout({ onClick }: { onClick: () => void }) {
         className="border-t-2 group flex items-center p-2 text-gray-600  font-medium  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
       >
         <HiLogout></HiLogout>
-        <span className="flex-1 ms-3 whitespace-nowrap">Logout</span>
+        <span className="font-Nexa flex-1 ms-3 whitespace-nowrap">Logout</span>
       </a>
     </>
   );
