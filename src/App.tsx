@@ -5,6 +5,7 @@ import { ProtectRoutes } from "./utils/ProtectRoutes";
 import Students from "./pages/students/Students";
 import Articles from "./pages/articles/Articles";
 import NewArticle from "./pages/articles/NewArticle";
+import EditArticle from "./pages/articles/EditArticle";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="students" element={<Students />} />
           <Route path="articles" element={<Articles />} />
           <Route path="articles/new" element={<NewArticle />} />
+          <Route path="articles/edit" element={<EditArticle />} />
         </Route>
       </Route>
     </Routes>

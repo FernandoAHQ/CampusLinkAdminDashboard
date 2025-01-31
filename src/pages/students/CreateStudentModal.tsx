@@ -6,7 +6,6 @@ import {
   Select,
   TextInput,
 } from "flowbite-react";
-import React from "react";
 import { StudentData } from "./Students";
 
 type props = {

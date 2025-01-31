@@ -14,15 +14,17 @@ export type UpdateStudentType = {
 };
 
 export type CreateArticleType = {
-  title: string;
-  content: string;
-  tags?: string[];
-  image_url: string;
+  title: String;
+  content: String;
+  tags: String[];
+  image_url: String;
 };
 
 export type UpdateArticleType = {
   title: string;
   content: string;
-  tags?: string[];
+  tags: string[];
   image_url: string;
+  active: boolean;
 };
+

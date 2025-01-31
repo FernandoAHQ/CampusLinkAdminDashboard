@@ -11,8 +11,6 @@ import {
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import logo from '../../assets/logo.svg'
-import { IconType } from "react-icons";
-import { HiMiniNewspaper } from "react-icons/hi2";
 
 function Sidebar() {
 
@@ -74,21 +72,7 @@ type ItemProps = {
 };
 
 function Item({ title, trail, icon, highlight = false }: ItemProps) {
-  // const iconElement = 
-  //   icon == "Home" ? (
-  //     <HiHome size={28} className="text-gray-500 group-hover:text-gray-800" />
-  //   ) : icon == "Students" ? (
-      // <HiAcademicCap
-      //   size={28}
-      //   className="text-gray-500 group-hover:text-gray-800"
-      // />
-  //   ) : icon == "Reports" ? (
-  //     <HiDocumentReport
-  //       size={28}
-  //       className="text-gray-500 group-hover:text-gray-800"
-  //     />
-  //   ) : null;
-
+  
   const trailingElements = highlight ? (
     <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
       {trail}

@@ -3,7 +3,7 @@ export type Article = {
   title: string;
   content: string;
   created_at: Date;
-  tags: String[];
+  tags: string[];
   image_url: string;
   active: boolean;
   //age: number;

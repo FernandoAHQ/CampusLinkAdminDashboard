@@ -1,10 +1,15 @@
 import { Student } from "../models/students";
 import axios from 'axios';
 import { useAuth } from "./useAuth";
-import { CreateStudentType, UpdateStudentType } from "../utils/types";
+import { CreateArticleType, CreateStudentType, UpdateArticleType, UpdateStudentType } from "../utils/types";
 import { Article } from "../models/articles";
 
 
+
+interface FetchArticleResponse {
+  status: string;
+  data: Article;
+}
 
 interface FetchArticlesResponse {
   status: string;
@@ -15,6 +20,11 @@ interface FetchArticlesResponse {
 interface FetchStudentsResponse {
   status: string;
   data: Student[];
+}
+
+interface PostArticleResponse {
+  status: string;
+  message: string;
 }
 
 interface PostStudentResponse {
@@ -169,9 +179,27 @@ const postUpdateStudent = async (
 
 };
 
-const fetchArticles = async (): Promise<[string, Article[]] | Error> => {
+const fetchArticle = async (id:string): Promise<[string, Article] | Error> => {
   try {
-    const response = await axiosInstance.get<FetchArticlesResponse>("/articles/all/admin");
+    const response = await axiosInstance.get<FetchArticleResponse>(`/articles/${id}`);
+    console.log(response.data);
+    
+  return [response.data.status, response.data.data];
+} catch (error) {
+  if (error instanceof Error) {
+    // If `error` is an instance of `Error`, return it as is
+    return error;
+  } else {
+    // If `error` is not an `Error`, wrap it into an `Error`
+    return new Error("An unknown error occurred");
+  }
+}
+};
+
+const fetchArticles = async (q:string): Promise<[string, Article[]] | Error> => {
+  const query = q == '' ? '' : '?query=' + q;
+  try {
+    const response = await axiosInstance.get<FetchArticlesResponse>(`/articles/all/admin${query}`);
     console.log(response.data);
     
   return [response.data.status, response.data.data];
@@ -187,11 +215,60 @@ const fetchArticles = async (): Promise<[string, Article[]] | Error> => {
 };
 
 
+const postNewArticle = async (newArticleData: CreateArticleType) => {
+
+
+  console.log("DATA:");
+  console.log(newArticleData);
+
+  try {
+
+    const response = await axiosInstance.post<PostArticleResponse>("/articles/new", newArticleData);
+    console.log(response);
+    
+    return [response.data.status, response.data.message];
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return error;
+    } else {
+      return new Error("An unknown error occurred");
+    }
+  }
+};
+
+
+const postUpdateArticle = async (id: string, articleData: UpdateArticleType) => {
+
+
+  console.log("DATA:");
+  console.log(articleData);
+
+  try {
+
+    const response = await axiosInstance.patch<PostArticleResponse>(`/articles/${id}`, articleData);
+    console.log(response);
+    
+    return [response.data.status, response.data.message];
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return error;
+    } else {
+      return new Error("An unknown error occurred");
+    }
+  }
+};
+
+
 return {
+  postNewArticle,
   fetchStudents,
   postNewStudent,
   postUpdateStudent,
-  fetchArticles
+  fetchArticles,
+  fetchArticle,
+  postUpdateArticle
 }
 
 };

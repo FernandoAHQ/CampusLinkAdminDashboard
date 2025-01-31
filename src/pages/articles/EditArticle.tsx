@@ -7,25 +7,27 @@ import {
     Textarea,
     TextInput,
   } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TagForm from "../../components/TagForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { HiSave, HiSaveAs } from "react-icons/hi";
 import { useApi } from "../../hooks/useApi";
 import { validateNewArticle } from "../../utils/validate";
 
-  type NewArticleType = {
+  type UpdateArticleType = {
     title: string;
     content: string;
-    tags: String[];
+    tags: string[];
     image_url: string;
+    active: boolean;
   };
   
-  const initialState: NewArticleType = {
+  const initialState: UpdateArticleType = {
       title: "",
       content: "",
       tags: [],
       image_url: "",
+      active: false
   };
 
   const premadeTags = [
@@ -52,11 +54,24 @@ import { validateNewArticle } from "../../utils/validate";
   ];
   
   
-  function NewArticle() {
+  function EditArticle() {
+    const [searchParams] = useSearchParams();
 
-    const [article, setArticle] = useState<NewArticleType>(initialState);
+    const [article, setArticle] = useState<UpdateArticleType>(initialState);
     const [newTag, setNewTag] = useState('');
-    const {postNewArticle} = useApi();
+    const {fetchArticle, postUpdateArticle} = useApi();
+
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        
+        loadArticle();
+      
+    }, [])
+    
+
+
     
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -65,14 +80,34 @@ import { validateNewArticle } from "../../utils/validate";
         }
     };
 
+    const loadArticle = async () => {
+        const id = searchParams.get('id');
+        const result = await fetchArticle(id!);
+        if (Array.isArray(result) && result[0] === "success") {
+            setArticle(result[1]);
+            console.log(article);
+            
+          } else {
+            console.error("Failed to fetch articles:", result);
+          }
+    };
+    
     const submitArticle = async ()=> {
+        const id = searchParams.get('id');
       const {valid, errors} = validateNewArticle(article);
       if (!valid) {
         return alert(errors);
       }
-      const res = await postNewArticle(article);
-      console.log(res);
+      const {title, content, tags, image_url, active} = article;
+      const updatedData = {title, content, tags, image_url, active};
+
+      const res = await postUpdateArticle(id!, updatedData);
+      navigateHome();
       
+    }
+
+    const navigateHome = ()=>{
+        navigate("/dashboard/articles");
     }
   
     return (
@@ -181,7 +216,8 @@ import { validateNewArticle } from "../../utils/validate";
 
             
             <div className="flex justify-end">
-            <button type="button" className="font-Montserrat font-semibold text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-8 flex">
+            <button onClick={navigateHome}
+             type="button" className="font-Montserrat font-semibold text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-8 flex">
             Cancel
           </button>
             
@@ -200,5 +236,5 @@ import { validateNewArticle } from "../../utils/validate";
   }
 
   
-  export default NewArticle;
+  export default EditArticle;
   
